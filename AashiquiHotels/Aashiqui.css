@@ -1,0 +1,463 @@
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+  }
+
+  body {
+      display: flex;
+      height: 100vh;
+     line-height: 1 !important;
+      /* min-height: 100vh; */
+      background-color: #f4f4f9;
+  }
+
+  /* Sidebar styling */
+  .sidebar {
+      width: 250px;
+      /* background-color: #2b2e4a; */
+      background-color: #0c8785;
+      color: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+
+
+
+  .sidebar h5 {
+    color: #f5a623;
+    margin-bottom: 30px;
+}
+
+
+  .sidebar ul {
+      list-style: none;
+  }
+
+  .sidebar ul li {
+      padding: 15px 10px;
+      border-bottom: 1px solid #444;
+  }
+
+  .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+  }
+
+  .sidebar ul li a:hover {
+      color: #f5a623;
+  }
+
+  /* Main content styling */
+  .main-content {
+      flex: 1;
+      padding: 20px;
+  }
+
+  .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+  }
+
+  .title-wrapper {
+      flex-grow: 1;
+      /* Makes the title take up the remaining space */
+      margin-right: 20px;
+      /* Optional margin for space between title and profile */
+  }
+
+  .header h1 {
+      font-size: 28px;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* Truncate if the text is too long */
+      margin: 0;
+      /* To prevent default margin issues */
+  }
+
+  .profile {
+      display: flex;
+      align-items: center;
+  }
+
+  .profile img {
+      width: 50px;
+      /* Adjust size as needed */
+      height: 50px;
+      /* Adjust size as needed */
+      border-radius: 50%;
+      margin-right: 10px;
+  }
+
+  .profile-name {
+      font-size: 16px;
+      color: #333;
+  }
+
+  /* Overview Cards */
+  .cards {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+  }
+
+  .card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 23%;
+      text-align: center;
+  }
+
+  .card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+  }
+
+  .card p {
+      font-size: 18px;
+      color: #888;
+  }
+
+  /* Table styling */
+  .order-table {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+  }
+
+  .order-table th,
+  .order-table td {
+      padding: 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+  }
+
+  .order-table th {
+      background-color: #f5a623;
+      color: white;
+  }
+
+  .order-table td {
+      background-color: white;
+  }
+
+  .order-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+  }
+
+  .status-btn {
+      padding: 8px 15px;
+      border-radius: 20px;
+      background-color: #f5a623;
+      color: white;
+      border: none;
+      cursor: pointer;
+  }
+
+  .status-btn.completed {
+      background-color: #2ecc71;
+  }
+
+  .status-btn.pending {
+      background-color: #e74c3c;
+  }
+
+
+
+  .customer-reviews-section {
+      /* padding: 20px; */
+      text-align: center;
+  }
+
+  .scroll-container {
+      display: flex;
+      overflow-x: scroll;
+      padding: 20px;
+      cursor: grab;
+      scroll-behavior: smooth;
+  }
+
+
+
+  .scroll-container:active {
+      cursor: grabbing;
+  }
+
+  .review-card {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      margin: 0 15px;
+      min-width: 250px;
+      text-align: center;
+      flex-shrink: 0;
+  }
+
+  .review-card img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+  }
+
+  .rating {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+  }
+
+
+
+
+  .menu-icon {
+      cursor: pointer;
+      font-size: 24px;
+      margin-left: 10px;
+  }
+
+  .dropdown-menu {
+      list-style-type: none;
+      padding: 10px;
+      margin: 0;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      position: absolute;
+  }
+
+  .dropdown-menu li {
+      padding: 8px;
+      cursor: pointer;
+  }
+
+  .dropdown-menu li:hover {
+      background-color: #eee;
+  }
+
+
+
+  .tab {
+      overflow: hidden;
+      border: 1px solid #ccc;
+      background-color: #98d6d6; /*#0c8785*/
+  }
+
+  /* Style the buttons inside the tab */
+  .tab button {
+      background-color: inherit;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      transition: 0.3s;
+      font-size: 17px;
+  }
+
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+      background-color: #ddd;
+  }
+
+  /* Create an active/current tablink class */
+  /* .tab button.active {
+            background-color: #0c8785;
+            color: #ffffff;
+          } */
+
+  .tabbtnstyle {
+      background-color: #0c8785 !important;
+      color: #ffffff;
+  }
+
+
+  /* Style the tab content */
+  .tabcontent {
+      display: none;
+      padding: 6px 12px;
+      height: 66vh;
+      border: 1px solid #ccc;
+      border-top: none;
+  }
+
+
+
+  /* Modal background */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+/* Hidden class for hiding modal */
+.hidden {
+    display: none;
+}
+
+/* Modal content */
+.modal-content {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    padding: 20px;
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
+
+
+.card:hover .add-btn {
+    display: block;
+}
+
+.add-btn {
+    position: absolute;
+    bottom: 1px;
+    right: 0px;
+    display: none;
+}
+
+
+.card {
+    position: relative; /* Ensure the overlay is positioned relative to the card */
+}
+
+.card-overlay {
+    display: none; /* Hide overlay by default */
+    position: absolute;
+    bottom: 1%;
+    left: -16%;
+    background: rgb(8, 7, 7);
+    /* padding: 10px; */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 150px; /* Set a fixed width for the overlay */
+    z-index: 10; /* Ensure it appears above other elements */
+}
+
+.card:hover .card-overlay {
+ display: flex;/* Show overlay on hover */
+}
+
+.card-overlay input[type="number"] {
+   
+    width: 60px; /* Adjust input width */
+     /*margin-left: 0px; Space between input and button */
+}
+
+#rowItem .row{
+    margin: 5px 5px 5px 5px;
+}
+
+
+
+  .required-star {
+        color: red;
+        font-weight: bold;
+    }
+
+
+#address label{
+display: none !important;
+}
+
+
+
+  .customer-reviews-section1 {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-reviews-section1 h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+
+  .offers-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .offer-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+
+  .offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .offer-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .offer-card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+  }
+
+  .offer-details {
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .redeem-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .redeem-button:hover {
+    background-color: #218838;
+  }
+

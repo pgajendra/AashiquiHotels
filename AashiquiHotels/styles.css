@@ -1,0 +1,83 @@
+/* General Background */
+body {
+  background-image: linear-gradient(#e3d9d9, #70b1a5);
+    background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Glass Effect Container */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Form Styling */
+.form-container {
+  max-width: 400px;
+  width: 100%;
+}
+
+.btn-pink {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+}
+
+.btn-pink:hover {
+  background-color: #e0336e;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.divider::before {
+  margin-right: 10px;
+}
+
+.divider::after {
+  margin-left: 10px;
+}
+
+.social-buttons a {
+  margin: 0 5px;
+  font-size: 20px;
+  color: white;
+}
+
+.social-buttons a:hover {
+  color: #ff4081;
+}
+
+/* Text Styles */
+.text-pink {
+  color: #ff4081;
+  text-decoration: none;
+}
+
+.text-pink:hover {
+  text-decoration: underline;
+}
+
+.text-white {
+  color: white !important;
+}

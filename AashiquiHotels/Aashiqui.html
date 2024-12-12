@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smiley Hotels</title>
+    <link rel="icon"
+        href="https://firebasestorage.googleapis.com/v0/b/vsmileyhotels-fb0c1.appspot.com/o/IMG_20240909_105804.jpg?alt=media&token=e0b36dd4-2a0b-48e8-a2a4-04b15a6fb914"
+        type="image/x-icon">
+    <link rel="stylesheet" href="Aashiqui.css">
+    <script src="Aashiqui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body ng-app="hotelApp" ng-controller="hotelCtrl">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <h5>Smiley Hotels <img
+                    src="https://firebasestorage.googleapis.com/v0/b/vsmileyhotels-fb0c1.appspot.com/o/IMG_20240909_105804.jpg?alt=media&token=e0b36dd4-2a0b-48e8-a2a4-04b15a6fb914"
+                    style="width: 50px; height: 50px; border-radius: 10px;" /></h5>
+            <ul>
+                <li><a href="#" ng-click="showSection('dashboard')">Dashboard</a></li>
+                <li><a href="#" ng-click="showSection('menu')">Menu</a></li>
+                <li><a href="#" ng-click="showSection('reports')">Reports</a></li>
+                <li><a href="#" ng-click="showSection('Customer')">Customers</a></li>
+                <li><a href="#" ng-click="showSection('orders')">Orders</a></li>
+                <li><a href="#" ng-click="showSection('employees')">Employees</a></li>
+                <!-- <li><a href="#" ng-click="showSection('booking')">Bookings</a></li> -->
+
+                <li><a href="#" ng-click="showSection('offers')">Offers</a></li>
+                <li><a href="#" ng-click="logOut()">Logout</a></li>
+
+            </ul>
+        </div>
+        <!-- <div>
+            <ul>
+                <li><a href="#" ng-click="logOut()">Logout</a></li>
+            </ul>
+        </div> -->
+    </div>
+
+    <!-- Modal HTML -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Order ID:</strong> {{selectedOrder.id}}</p>
+                    <p><strong>Total:</strong> {{selectedOrder.totalprice}}</p>
+                    <p><strong>Payment Type:</strong> {{selectedOrder.paymenttype}}</p>
+                    <p ng-show="selectedOrderType !== 'Offline'"><strong >Address:</strong> {{selectedOrder.address}}</p>
+                     <p><strong>OrderedItems:</strong> {{selectedOrder.ordereditems}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="employeeDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeDetailsModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="employeeDetailsModal">Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Employee ID:</strong> {{selectedOrder.empid}}</p>
+                    <p><strong>Employee Name:</strong> {{selectedOrder.name}}</p>
+                    <p><strong>Address</strong> {{selectedOrder.address}}</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="modal fade" id="employeeLeaveDetailsModal" tabindex="-1" role="dialog" aria-labelledby="employeeLeaveDetailsModal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="employeeLeaveDetailsModal">Employee Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Employee ID:</strong> {{selectedEmpAvbleaves.empid}}</p>
+                        <p><strong>Employee Name:</strong> {{selectedEmpAvbleaves.name}}</p>
+                        <p><strong>Available Leaves :</strong> {{selectedEmpAvbleaves.availableLeaves}}</p>
+                        <p><strong>Before Taken:</strong> {{selectedEmpAvbleaves.takenon}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="employeeHomeDeliveryModal" tabindex="-1" role="dialog" aria-labelledby="employeeHomeDeliveryModal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="employeeHomeDeliveryModal">Employee Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>name :</strong> {{selectedHomeDelivery.name}}</p>
+                        <p><strong>refid ID :</strong> {{selectedHomeDelivery.refid}}</p>
+                        <p><strong>mobilenum  :</strong> {{selectedHomeDelivery.mobilenum}}</p>
+                        <p><strong>Address :</strong> {{selectedHomeDelivery.address}}</p>
+                            <p><strong>Menu items:</strong> {{selectedHomeDelivery.items}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <!-- <div style="width: 200px;"> -->
+            <h1>{{currentSection | capitalize}}</h1>
+            <!-- </div> -->
+            <div class="profile">
+                <img src="https://cdn-icons-png.flaticon.com/512/3066/3066259.png" alt="Profile Picture">
+                <span class="profile-name">Gajendra pala</span>
+            </div>
+        </div>
+
+        <!-- Overview Cards (Dashboard section) -->
+        <div ng-show="currentSection === 'dashboard'">
+            <!-- Total Orders Card -->
+
+            <div style="display: flex; width: 100%;">
+                <!-- Daily Revenue Card -->
+                <div class="card col-md-4" style="height: 50vh;">
+                    <h6>Monthly Revenue</h6>
+                    <!-- <p>$154K</p> -->
+                    <p><span style="color: green;">+1.5%</span> than last month</p>
+                    <div class="chart-container">
+                        <canvas id="dailyRevenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Customer Flow Card -->
+                <div class="card col-md-4" style="height: 50vh;">
+                    <h6>Customer Flow Last Month</h6>
+                    <p>In Restaurant: <strong>$2,780k</strong></p>
+                    <p>Online Order: <strong>$1,410k</strong></p>
+                    <div class="chart-container">
+                        <canvas id="customerFlowChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Example of Total Sale Card -->
+                <div class="card col-md-4" style="height: 50vh;">
+                    <h3>Total Sale</h3>
+                    <p>$254.90</p>
+                    <!-- <p>6 total orders</p> -->
+                    <div class="chart-container">
+                        <canvas id="totalSaleChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-12" style="display: flex; margin: 25px 0px 0px 0;">
+
+                
+
+                <div class="col-md-4 card"
+                    style="margin-right: 1%;  color: rgb(0, 0, 0);   background: linear-gradient(310deg, #b3f0a0, #a8df69, #00000000);">
+                    <h3>Total Sales</h3>
+                    <p style="color: rgb(0, 0, 0);">ONLINE || OFFLINE</p>
+                    <p style="color: rgb(0, 0, 0);"><span>20</span> <span style="margin-left: 6vw;"> 50</span></p>
+                </div>
+
+                <div class="col-md-4 card"
+                    style="margin-right: 1%;  color: rgb(0, 0, 0);   background: linear-gradient(310deg, #4c72db, #bfeb8d, #00000000);">
+                    <h3>Total Orders</h3>
+                    <p style="color: rgb(0, 0, 0);">Delivered || Canceled</p>
+                    <p style="color: rgb(0, 0, 0);"><span>100</span> <span style="margin-left: 6vw;"> 10</span></p>
+                </div>
+
+                <div class="col-md-4 card"
+                    style="margin-right: 1%;    color: rgb(0, 0, 0); background: linear-gradient(310deg, #e4a86f, #bfeb8d, #00000000);">
+                    <h3>Total Cost</h3>
+                    <p style="color: rgb(0, 0, 0);">Raw-Items || Employess || Other Exp</p>
+                    <p style="color: rgb(0, 0, 0);"><span>300</span> <span style="margin-left: 6vw;"> 200</span><span style="margin-left: 6vw;"> 500</span></p>
+                </div>
+
+                <!-- <div class="card"
+                    style="margin-right: 1%;   color: rgb(0, 0, 0);  background: linear-gradient(310deg, #0ed1a0, #bfeb8d, #00000000);">
+                    <h3>Total Canceled</h3>
+                    <p style="color: rgb(0, 0, 0);">ONLINE || OFFLINE</p>
+                    <p><span>20</span> <span style="margin-left: 6vw;"> 50</span></p>
+                </div> -->
+
+
+
+            </div>
+
+        </div>
+
+        <div class="customer-reviews-section1" ng-show="currentSection === 'offers'">
+            <h2>Special Offers for You!</h2>
+            <div class="offers-container" style="overflow-y: scroll;">
+              <!-- Example Offer 1 -->
+              <div class="offer-card" ng-repeat="offer in offers">
+                <h3>{{ offer.title }}</h3>
+                <p>{{ offer.description }}</p>
+                <div class="offer-details">
+                  <span class="offer-validity">Valid till: {{ offer.validity | date:'MMM dd, yyyy' }}</span>
+                  <span class="offer-discount">{{ offer.discount }}% Off</span>
+                </div>
+                <button class="redeem-button" ng-click="redeemOffer(offer.id)">Redeem Offer</button>
+              </div>
+            </div>
+          </div>
+          
+
+        <div class="customer-reviews-section" ng-show="currentSection === 'Customer'">
+
+            <div class="scroll-container">
+                <div class="review-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/8732/8732445.png" alt="Food Image">
+                    <h3>Himesh Doe</h3>
+                    <p>1 day ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    <div class="rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span>4.5</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/8732/8732445.png" alt="Food Image">
+                    <h3>Johen Doe</h3>
+                    <p>1 day ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    <div class="rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span>4.5</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/8732/8732445.png" alt="Food Image">
+                    <h3>Johen Doe</h3>
+                    <p>1 day ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    <div class="rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span>4.5</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <img src="https://cdn-icons-png.flaticon.com/512/8732/8732445.png" alt="Food Image">
+                    <h3>Johen Doe</h3>
+                    <p>1 day ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    <div class="rating">
+                        <span>⭐⭐⭐⭐⭐</span>
+                        <span>4.5</span>
+                    </div>
+                </div>
+                <!-- Additional review cards -->
+            </div>
+            <h2>Popular Items</h2>
+            <div class="row" style="display: flex; overflow-x: scroll;   margin: auto; width: 100%;">
+                <div class="card col-md-4" style="background: linear-gradient(179deg, #98d5c0, transparent);"
+                    ng-repeat="item in popularItems track by $index" ng-style="{'background': getDynamicColor($index)}">
+                    <img src={{item.image}} style="width: 50px; height: 50px;">
+                    <h3>{{item.name}}</h3>
+                    <!-- <p>Price: {{item.price}}</p> -->
+                    <!-- <p>Description: {{item.description}}</p> -->
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <div ng-show="currentSection === 'orders'">
+            <h2>Recent Orders</h2>
+
+            <!-- Dropdown to choose between Online/Offline -->
+            <div class="mb-3">
+                <label for="orderType">Select Order Type: </label>
+                <select id="orderType" ng-model="selectedOrderType" ng-options="type for type in orderTypes"
+                    class="form-select" ng-change="filterOrders()"></select>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th ng-show="selectedOrderType !== 'Offline'">Customer Name</th>
+                        <!-- <th>Payment</th> -->
+                        <th>Total</th>
+                        <th ng-show="selectedOrderType !== 'Offline'">Mobile Number</th>
+                        <th>Status</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in filteredOrders">
+                        <td>{{order.id}}</td>
+                        <td ng-show="selectedOrderType !== 'Offline'">{{order.customername}}</td>
+                        <!-- <td>{{order.paymenttype}}</td> -->
+                        <td>{{order.totalprice}}</td>
+                        <td ng-show="selectedOrderType !== 'Offline'">{{order.mobilenumber}}</td>
+                        <td><span class="status-btn" ng-class="order.status">{{order.status | capitalize}}</span></td>
+                        
+                        <!-- <td><button class="status-btn" ng-click="getOrderDetais(order)">Details</button></td> -->
+                        <td><button class="status-btn" ng-click="getOrderDetais(order)" data-toggle="modal"
+                                data-target="#orderDetailsModal">Details</button></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="container" ng-show="currentSection === 'menu'">
+
+
+            <section id="menu" class="menu-section">
+                <div>
+                    <!-- Tab Navigation -->
+                    <ul class="nav nav-tabs" id="menuTabs" role="tablist"
+                        style="background-image: linear-gradient(180deg, #4dd5b0, transparent);color: #8055c5;">
+                        <li class="nav-item" ng-repeat="(category, menuitem) in menuAllItems">
+                            <a class="nav-link" id="{{category | lowercase}}-tab" data-toggle="tab"
+                                href="#{{category | lowercase}}" role="tab" aria-controls="{{category | lowercase}}"
+                                aria-selected="{{$first}}" ng-class="{'active': $first}">
+                                {{category}}
+                            </a>
+                        </li>
+                        <li style="display: contents;"><button class="btn btn-primary" style="float: right;    margin: 4px 4px 0px 0px;"
+                            onclick="addNewMenu(event)"> Add Item </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="menuTabContent">
+                        <div class="tab-pane fade" id="{{category | lowercase}}" role="tabpanel"
+                            aria-labelledby="{{category | lowercase}}-tab"
+                            ng-repeat="(category, menuitem) in menuAllItems" ng-class="{'show active': $first}">
+                            <div id="rowItem">
+                                <div class="row">
+                                    <div class="card col-md-2" style="display: inline;" ng-repeat="item in menuitem"
+                                        onmouseover="this.querySelector('.card-overlay').style.display='block'"
+                                        onmouseleave="this.querySelector('.card-overlay').style.display='none'">
+                                        <img ng-src="{{item.image}}" style="width: 80px; height: 60px">
+                                        <h3>{{item.name}}</h3>
+                                        <p>Price: {{item.price}}</p>
+                                        <p>Description: {{item.description}}</p>
+                                        <div class="card-overlay">
+                                            <button class="btn btn-primary add-btn"
+                                                style="width: 50px; height: 25px; margin-left: 50% !important; padding: 1%;"
+                                                ng-click="editItem(item,category)">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                        </div>
+                        <div class="tab-pane fade" id="addNewItem" role="tabpanel" aria-labelledby="addNewItem-tab">
+                            <div id="newItemTab">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="itemName">Name <span class="required-star">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Item name" id="itemName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="itemPrice">Cost <span class="required-star">*</span></label>
+                                        <input type="number" class="form-control" placeholder="Item Cost" id="itemPrice" min="0" step="10">
+                                    </div>
+                                    
+                                    <div class="form-floating">
+                                        <label for="itemcategory">Works with selects</label>
+                                        <select class="form-select" id="itemcategory" aria-label="Floating label select example">
+                                            <option ng-repeat="category in categoryMenuArray" value="{{category}}">
+                                                {{category}}
+                                            </option>
+                                        </select>
+                                       
+                                      </div>
+                                    
+                                    <div class="form-group">
+                                        <h4 class="box-title mt-20">Uploaded Image</h4>
+                                        <div class="product-img text-start">
+                                            <img id="previewImage" 
+                                                src="https://riday-admin-template.multipurposethemes.com/bs5/images/product/product-9.png" 
+                                                alt="" 
+                                                style="width: 100px; height: 100px; object-fit: cover;">
+                                            <p>Upload Another Image</p>
+                                            <div class="btn btn-info mb-20">
+                                                <input type="file" class="upload" id="imageUpload" onchange="showImage()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                         <div>
+                                                <button class="btn btn-success" id="saveitembtn" onclick="savenewItemData('newItemTab')">Save</button>
+                                               <button class="btn btn-danger" id="clearitembtn" onclick="clearnewItemData('newItemTab')">Clear</button>
+                                                <button class="btn btn-warning" id="updateitembtn" onclick="uploadDataToDb('newItemTab')">Update</button>
+                                            </div>
+                                        </div>
+
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-floating">
+                                        <label for="itemdescription">Ingredients and Description </label>
+                                        <textarea class="form-control" style="height: 100px" placeholder="Leave a Description about item  " id="itemdescription"></textarea>
+                                        
+                                      </div>
+                                </div>
+                            
+                            
+                                </div>
+                            </div>
+                        
+                        
+                        
+                        </div>
+                    </div>
+                
+            </section>
+
+
+
+
+        </div>
+
+        
+
+        <!-- <div ng-show="currentSection === 'reports'"> -->
+        <!-- <h2>Recent Reports</h2> -->
+
+        <div class="container mt-5" ng-show="currentSection === 'reports'">
+
+
+            <!-- Menu Icon -->
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="menuIcon" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bars"></i> Menu
+                </button>
+
+                <!-- Dropdown Menu Items -->
+                <div class="dropdown-menu" aria-labelledby="menuIcon">
+                    <a class="dropdown-item" href="#" ng-repeat="item in reportData" ng-click="showTable(item)">
+                        <p>{{ item.name }}</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Table to display related data -->
+            <div class="mt-4" ng-if="selectedItem">
+                <h4>Data for {{ selectedItem.name }}</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>In</th>
+                            <th>Out</th>
+                            <th>Details</th>
+                            
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in selectedItem.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.in }}</td>
+                            <td>{{ data.out }}</td>
+                            <td><button class="status-btn" ng-click="getEmployeeAvailableLeaves(data)"
+                                data-toggle="modal" data-target="#employeeLeaveDetailsModal">Details</button></td>
+                    </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+            <div class="mt-4" ng-if="selectedBooking">
+                <h4>Data for {{ selectedBooking.name }}</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>address</th>
+                            <th>mobilenum</th>
+                            <th>Details</th>
+                            
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in selectedBooking.data">
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.refid }}</td>
+                            <td>{{ data.mobilenum }}</td>
+                            <td><button class="status-btn" ng-click="getHomedelivery(data)"
+                                data-toggle="modal" data-target="#employeeHomeDeliveryModal">Details</button></td>
+                    </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <!-- </div> -->
+
+        <div ng-show="currentSection === 'employees'">
+            <!-- Dropdown to choose between New/Existing Employees -->
+            <div class="mb-3">
+                <label for="orderType">Select Employee Type: </label>
+                <select id="orderType" ng-model="selectedeEmployeeType" ng-options="type for type in emptypes"
+                    class="form-select"></select>
+
+                <!-- Show form if 'new' is selected -->
+                <div ng-if="selectedeEmployeeType === 'new'">
+                    <h3>Add New Employee</h3>
+
+
+                    <div class="tab">
+                        <button id="basic_details_info" class="tablinks"
+                            onclick="openCity(event, 'basic_details','basic_details')">Basic
+                            Details</button>
+                        <button id="address_info" class="tablinks" disabled="true"
+                            onclick="openCity(event, 'address','address')">present
+                            & permanent Address</button>
+                        <button id="upload_documents_info" class="tablinks" disabled="true"
+                            onclick="openCity(event, 'upload_documents','upload_documents')">Upload Documents</button>
+                        <button id="verification_info" class="tablinks" disabled="true"
+                            onclick="openCity(event, 'verification','verification')">verification</button>
+
+
+                    </div>
+
+                    <div id="basic_details" class="tabcontent">
+                        <h3>Signup</h3>
+                        <p>London is the capital city of England.</p>
+                        <form>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="username">Username <span class="required-star">*</span></label>
+                                    <input type="text" class="form-control" placeholder="Email or Phone" id="username" required>
+                                </div>
+
+                              
+
+                                <div class="form-group">
+                                    <label for="password">Password <span class="required-star">*</span></label>
+                                    <div class="input-group" style="display: flex">
+                                      <input type="password" class="form-control" id="password" placeholder="Enter password">
+                                      <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" onclick="showPasssword('password')" type="button">
+                                          <i class="fas fa-eye"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="form-group">
+                                    <label for="confirm_password">Confirm Password <span class="required-star">*</span></label>
+                                    <div class="input-group" style="display: flex">
+                                      <input type="password" class="form-control" id="confirm_password" placeholder="Enter password">
+                                      <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" onclick="showPasssword('confirm_password')" type="button">
+                                          <i class="fas fa-eye"></i>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                
+                            </div>
+
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="mobileno"> Mobile no <span class="required-star">*</span></label>
+                                    <input type="text" class="form-control" placeholder="mobileno" id="mobileno">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gmail">G-Mail Id <span class="required-star">*</span></label>
+                                    <input type="text"  ng-model="signupMailID" class="form-control" placeholder=" G-Mail Id" id="gmail">
+                                </div>
+                                <div class="form-group">
+                                    <label for="salary">Salary <span class="required-star">*</span></label>
+                                    <input type="number" class="form-control" placeholder="salary" id="salary"
+                                        min="5000" step="100">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label for="roletype">Role Type <span class="required-star">*</span></label>
+                                <!-- <input type="select" placeholder="roletype" id="roletype"> -->
+                                <select class="custom-select mr-sm-2" id="roletype">
+                                    <option>Chef</option>
+                                    <option>Service Provider</option>
+                                    <option>Cleaner</option>
+                                </select>
+                                <button class="btn btn-primary" onclick="openCity(event, 'address','basic_details')">Next</button>
+
+
+
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                    <div id="address" class="tabcontent">
+                        <!-- <h3>present & permanent Address</h3> -->
+                        <div>
+                            <!-- <div class="row"> -->
+                            <div class="col-sm-4">
+                                <h3 class="text-primary">Permanent Address</h3>
+
+                                <!--=== Permanent address=== -->
+                                <div class="form-group">
+                                    <label for="pAddressLine1"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="Address Line 1"
+                                        id="pAddressLine1">
+                                  
+                                </div>
+
+                               
+                                <div class="form-group">
+                                    <label for="pZipcode"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="Zip Code" id="pZipcode">
+                                  
+                                </div>
+                                <div class="form-group">
+                                    <label for="pCity"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="City" id="pCity">
+                                  
+                                </div>
+                                <div class="form-group">
+                                    <label for="pState"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="State" id="pState">
+                                   
+                                </div>
+                                <div class="form-group">
+                                    <label for="pCountry"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="country" id="pCountry">
+                                    
+                                </div>
+                                <!--=== Permanent address=== -->
+                            </div>
+                            <div class="col-sm-4">getEmployeeDetaisemployeeLeaveDetailsModal
+                               
+                                <h3 class="text-primary">Current Address</h3>
+                                <input type="checkbox" id="checkBox" onclick="autoFilAddress()"> Same as permanent
+                                address
+                                <!--=== current address=== -->
+                                <div class="form-group">
+                                    <label for="curAddressLine1"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="Address Line 1"
+                                        id="curAddressLine1">
+                                </div>
+
+                               
+                                <div class="form-group">
+                                    <label for="curZipcode"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="Zip Code" id="curZipcode">
+                                </div>
+                                <div class="form-group">
+                                    <label for="curCity"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="City" id="curCity">
+                                </div>
+                                <div class="form-group">
+                                    <label for="curState"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="State" id="curState">
+                                </div>
+                                <div class="form-group">
+                                    <label for="curCountry"><span class="required-star"></span></label> 
+                                    <input type="text" class="form-control" placeholder="country" id="curCountry">
+                                </div>
+                                <!--=== current address=== -->
+                            </div>
+                            <div class="col-sm-4">
+                                
+                                <div class="form-group">
+                                   
+                                    <button class="btn btn-primary"
+                                        onclick="openCity(event, 'upload_documents','address')">Next</button>
+                                </div>
+                            </div>
+                            <!-- </div> -->
+                        </div>
+                    </div>
+
+                    <div id="upload_documents" class="tabcontent">
+                        <h3 class="text-primary">Upload Documents</h3>
+                        <form>
+
+                            <div class="form-group">
+                                <label for="user_image">User Image <span class="required-star">*</span></label>
+                                <input type="file" class="form-control-file" id="user_image">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="aadhar_image">Aadhar <span class="required-star">*</span></label>
+                                <input type="file" class="form-control-file" id="aadhar_image">
+                            </div>
+                            <div class="form-group">
+                                <label for="qualification_image">Any qualification <span class="required-star">*</span></label>
+                                <input type="file" class="form-control-file" id="qualification_image">
+                            </div>
+
+                            <!-- <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="qualification_image" required>
+                                <label class="custom-file-label" for="qualification_image">Any qualification</label>
+                                <div class="invalid-feedback">Example invalid custom file feedback</div>
+                            </div> -->
+
+                            <button class="btn btn-primary" onclick="openCity(event, 'verification','upload_documents')">next</button>
+
+                        </form>
+                    </div>
+
+                    <div id="verification" class="tabcontent">
+                        <h3>verification</h3>
+                        <form>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="username">Email</label>
+                                    <input class="form-control" ng-model="signupMailID" type="text" placeholder="Email" id="otpmailId" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-warning"  ng-click="sendOtpToMail(signupMailID)">Send OTP</button>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="text" placeholder="OTP" id="otp">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-success" onclick="uploadedNewEmployee()"> Update</button>
+                                </div>
+
+                            </div>
+
+
+
+                        </form>
+                    </div>
+
+
+                </div>
+
+                <!-- Show table if 'existing' is selected -->
+                <div ng-if="selectedeEmployeeType === 'existing'">
+                    <h6>Existing Employees</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>ROLE</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="employee in employees">
+                                <td>{{ employee.empid }}</td>
+                                <td>{{ employee.name }}</td>
+                                <td>{{ employee.role }}</td>
+                                <td><button class="status-btn" ng-click="getEmployeeDetais(employee)"
+                                        data-toggle="modal" data-target="#employeeDetailsModal">Details</button></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+<script>
+
+//  function openCity(event,id) {
+//     console.log(id);
+    
+// }
+
+</script>
+    <script type="module">
+
+        //import firebaseConfig from './firebaseConfig.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";  // Update this to 9.21.0
+
+
+        var app = angular.module('hotelApp', []);
+        app.controller('hotelCtrl', function ($scope) {
+
+
+            // Firebase configuration
+          
+
+
+            // Initialize Firebase
+            var app1 = initializeApp(firebaseConfig());
+            var auth = getAuth(app1);
+            var db = getFirestore(app1);
+
+
+
+            $scope.logOut = async function () {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'login.html';
+
+                } catch (error) {
+                    alert(error.message);
+                }
+            }
+
+
+
+
+            // Default section to display on load
+            $scope.currentSection = 'dashboard';
+
+            // Function to change sections
+            $scope.showSection = function (section) {
+                $scope.currentSection = section;
+            };
+
+
+
+            async function loadMenuData() {
+                const cachedMenuData = localStorage.getItem('menuAllItems');
+                const employeesData = localStorage.getItem('employees');
+                const employeesattandence = localStorage.getItem('attendence');
+
+
+                if (cachedMenuData && employeesData) {
+                    // Load data from localStorage if it exists
+                    $scope.menuAllItems = JSON.parse(cachedMenuData);
+                    $scope.categoryMenuArray = Object.keys(JSON.parse(localStorage.getItem('menuAllItems')));
+                    // console.log( JSON.parse(employeesData));
+                    $scope.employees = JSON.parse(employeesData).employeesdata;
+                    $scope.reportData = [{ name: 'empattendence', type: 'empattendence', data: JSON.parse(employeesattandence).nov2024[1]},
+                                         { name: 'bookings',  type: 'booking', data: JSON.parse( localStorage.getItem('bookings')).homedelivery.nov2024 },
+                ]; 
+                    $scope.availableLeaves=JSON.parse(localStorage.getItem('available')).available
+               
+                    $scope.offers=JSON.parse(localStorage.getItem('offers')).listofoffers
+               
+               
+               
+                } else {
+                    // Load data from Firebase if menuAllItems is empty and store it in localStorage
+
+
+                    var data;
+                    const querySnapshot = await getDocs(collection(db, 'menuitems'));
+                    const queryEmployees = await getDocs(collection(db, 'employees'));
+                   // const queryEmployees = await getDocs(db, 'employees');
+                    const queryOrders = await getDocs(collection(db, 'orders'));
+                    const queryOffers = await getDocs(collection(db, 'vsmileybng'));
+                    querySnapshot.forEach((doc) => {
+                        data = doc.data();
+                       // $scope.menuAllItems = data;
+                        
+                    if (data) {
+                        $scope.menuAllItems = data;
+                        $scope.categoryMenuArray = Object.keys(data);
+                        localStorage.setItem('menuAllItems', JSON.stringify(data));
+
+                        $scope.$apply(); // Manually apply since we're in an async function
+                    } else {
+                        console.error("Failed to load data from Firebase.");
+                    }
+                    });
+
+                  
+
+
+                    queryEmployees.forEach((doc) => {
+                        if(doc._key.path.segments[doc._key.path.segments.length-1]=="listofemplyees"){
+                             localStorage.setItem('employees', JSON.stringify(doc.data()));
+                             $scope.employees = doc.data()['employeesdata'];
+                        }else if(doc._key.path.segments[doc._key.path.segments.length-1]=="attendance"){
+                             localStorage.setItem('attendence', JSON.stringify(doc.data()));
+                             $scope.reportData = [
+                                { name: 'empattendence', data: doc.data().nov2024[1]},
+                                // { name: 'bookings', data: [{ empid: 3, name: 'Data 3',in:'vs',out:'cadv' }, ] },
+                            ]; 
+                        }else if(doc._key.path.segments[doc._key.path.segments.length-1]=="leaves"){
+                             localStorage.setItem('available', JSON.stringify(doc.data()));
+                             $scope.availableLeaves =doc.data().available;
+                        }
+                       
+                    });
+
+
+                    queryOffers.forEach((doc) => {
+                                            if(doc._key.path.segments[doc._key.path.segments.length-1]=="offers"){
+                                                localStorage.setItem('offers', JSON.stringify(doc.data()));
+                                                $scope.offers= doc.data()['listofoffers'];
+                                            }
+                                        
+                                        });
+
+
+
+                    queryOrders.forEach((doc) => {
+
+                        if(doc._key.path.segments[doc._key.path.segments.length-1]=="bookings"){
+                            localStorage.setItem('bookings', JSON.stringify(doc.data()));
+                           $scope.tableBooking =doc.data().tablebooking.nov2024;
+                           $scope.homedelivery =doc.data().homedelivery.nov2024;
+                           $scope.reportData.push({name: 'bookings', data:doc.data().tablebooking.nov2024 } );
+                        }
+
+                        if(doc._key.path.segments[doc._key.path.segments.length-1]=="listoforders"){
+                            localStorage.setItem('orders', JSON.stringify(doc.data()));
+
+                        }
+
+                    });
+
+
+
+                }
+            }
+
+            loadMenuData();
+
+
+
+            $scope.popularItems = [
+                { image: 'https://cdn-icons-png.flaticon.com/512/8732/8732445.png', name: 'Burger', price: '$5.00', description: 'A juicy beef burger with fresh toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/4727/4727322.png', name: 'Burger', price: '$5.00', description: 'A juicy beef burger with fresh toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/12360/12360732.png', name: 'Pizza', price: '$8.00', description: 'Delicious cheese pizza with your choice of toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/8732/8732448.png', name: 'Pasta', price: '$7.00', description: 'Penne pasta served with a rich tomato sauce.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/4727/4727368.png', name: 'Burger', price: '$5.00', description: 'A juicy beef burger with fresh toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/4727/4727405.png', name: 'Pizza', price: '$8.00', description: 'Delicious cheese pizza with your choice of toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/9757/9757121.png', name: 'Pasta', price: '$7.00', description: 'Penne pasta served with a rich tomato sauce.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/4727/4727368.png', name: 'Burger', price: '$5.00', description: 'A juicy beef burger with fresh toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/4727/4727405.png', name: 'Pizza', price: '$8.00', description: 'Delicious cheese pizza with your choice of toppings.' },
+                { image: 'https://cdn-icons-png.flaticon.com/512/9757/9757121.png', name: 'Pasta', price: '$7.00', description: 'Penne pasta served with a rich tomato sauce.' }
+
+            ];
+
+            $scope.getDynamicColor = function (index) {
+                let hue = (index * 45) % 360;  // Generates a different hue for each card (0 to 360 degrees)
+                return `linear-gradient(179deg, hsl(${hue}, 60%, 70%), transparent)`; // Dynamic HSL color
+            };
+
+
+            $scope.orderTypes = ['Online', 'Offline'];
+
+            // Selected order type
+            $scope.selectedOrderType = 'Online'; // Default
+
+            $scope.signupMailID;
+
+            $scope.selectedeEmployeeType = 'existing'; // Default selection
+            $scope.emptypes = ['new', 'existing'];
+
+
+
+            // Data model for new employee
+            $scope.newEmployee = {};
+
+            // Function to add a new employee (for 'new')
+            $scope.addEmployee = function () {
+                if ($scope.newEmployee.name && $scope.newEmployee.id) {
+                    $scope.employees.push({
+                        id: $scope.newEmployee.id,
+                        name: $scope.newEmployee.name,
+                        info: $scope.newEmployee.info
+                    });
+                    $scope.newEmployee = {}; // Clear the form after submission
+                }
+            };
+
+            $scope.editItem = function (item,category) {
+
+                // console.log(item);
+                // console.log(category);
+                const allTabs = document.querySelectorAll(`#menuTabs .nav-item`);
+                allTabs.forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll(`#menuTabContent .tab-pane`).forEach(content => content.classList.remove('show', 'active', 'in'));
+
+                document.getElementById("addNewItem").classList.add('show', 'in', 'active');
+                document.getElementById("updateitembtn").disabled = false;
+                document.getElementById("saveitembtn").disabled = true;
+                document.getElementById("itemName").value=item.name;
+                document.getElementById("itemPrice").value=item.price;
+                document.getElementById("itemcategory").value=category;//"veg";//category;
+                document.getElementById("previewImage").src=item.image;
+
+
+
+
+            };
+
+
+
+            // Array of orders
+            $scope.orders = [
+                { id: '#1234', customer: 'John Doe', total: '$25.00', status: 'completed', type: 'Online' },
+                { id: '#1235', customer: 'Jane Smith', total: '$35.00', status: 'pending', type: 'Offline' },
+                { id: '#1236', customer: 'Robert Williams', total: '$40.00', status: 'completed', type: 'Online' },
+                { id: '#1237', customer: 'Alice Brown', total: '$20.00', status: 'pending', type: 'Offline' }
+            ];
+
+            // Function to filter orders based on selected type
+            $scope.filterOrders = function () {
+
+            if($scope.selectedOrderType=="Offline"){
+                $scope.filteredOrders =JSON.parse( localStorage.getItem('orders')).offlineorders;
+            }else if($scope.selectedOrderType=="Online"){
+                $scope.filteredOrders =JSON.parse( localStorage.getItem('orders')).onlineorders; 
+            }
+
+
+
+               // $scope.filteredOrders = $scope.orders.filter(order => order.type === $scope.selectedOrderType);
+            };
+
+
+
+            // Inside your AngularJS Controller
+$scope.offers1 = [
+  {
+    id: 1,
+    title: 'Flat 20% Off on First Order',
+    description: 'Enjoy a 20% discount on your first order with us!',
+    validity: new Date('2024-12-31'),
+    discount: 20,
+  },
+  {
+    id: 2,
+    title: 'Family Pack Offer',
+    description: 'Order for 4 or more and get 15% off on the total bill.',
+    validity: new Date('2024-12-20'),
+    discount: 15,
+  },
+  {
+    id: 3,
+    title: 'Birthday Special',
+    description: 'Celebrate your birthday with a 25% discount on any menu!',
+    validity: new Date('2024-12-25'),
+    discount: 25,
+  },
+  {
+    id: 4,
+    title: 'Weekend Bonanza',
+    description: 'Get 30% off on all orders above $50 every weekend.',
+    validity: new Date('2024-12-31'),
+    discount: 30,
+  },
+  {
+    id: 5,
+    title: 'Festive Offer',
+    description: 'Enjoy 40% off during the holiday season from December 20th to December 31st!',
+    validity: new Date('2024-12-31'),
+    discount: 40,
+  },
+  {
+    id: 6,
+    title: 'Lunch Combo Deal',
+    description: 'Get a free drink with every lunch combo ordered between 12 PM and 3 PM.',
+    validity: new Date('2024-12-31'),
+    discount: 0, // Free drink offer
+  },
+];
+
+$scope.redeemOffer = function (offerId) {
+  alert('Offer ' + offerId + ' redeemed!'); // You can implement your logic here
+};
+
+
+
+
+            $scope.selectedOrder = {}; // Placeholder for selected order details
+
+            $scope.getOrderDetais = function (order) {
+                $scope.selectedOrder = order; // Set the selected order details
+                $('#orderDetailsModal').modal('show'); // Trigger the modal
+            };
+
+
+            $scope.selectedEmployee = {}; // Placeholder for selected order details
+
+            $scope.getEmployeeDetais = function (emp) {
+                $scope.selectedOrder = emp; // Set the selected order details
+                $('#getEmployeeDetais').modal('show'); // Trigger the modal
+            };
+
+           
+            $scope.getEmployeeAvailableLeaves = function (emp) {
+                 // Set the selected order details
+                 emp["availableLeaves"]=$scope.availableLeaves.filter(items=>(items.empid==emp.empid))[0].availability;
+                 emp["takenon"]=$scope.availableLeaves.filter(items=>(items.empid==emp.empid))[0].takenon;
+                $scope.selectedEmpAvbleaves = emp
+                $('#getEmployeeAvailableLeaves').modal('show'); // Trigger the modal
+            };
+
+
+
+
+                   
+            $scope.getHomedelivery = function (emp) {
+                 // Set the selected order details
+              $scope.selectedHomeDelivery = emp
+                $('#getHomedelivery').modal('show'); // Trigger the modal
+            };
+
+
+
+            $scope.sendOtpToMail = function (email) {
+                if (email) {
+
+                    Swal.fire({
+                        title: flagData.altTitle,
+                        //text: flagData.errorMsg,
+                        html: `<h3> Sending OTP to:` + email + `</h3>`,
+                        icon: "error"
+                    });
+                    // Your logic to send OTP
+                } else {
+                    Swal.fire({
+                        title: flagData.altTitle,
+                        //text: flagData.errorMsg,
+                        html: `<h3> Email is required! </h3>`,
+                        icon: "error"
+                    });
+
+                }
+            };
+
+            // Initially filter the orders
+            $scope.filterOrders();
+
+            // $scope.reportData = [
+            //     { name: 'empattendence', data: [{ id: 1, info: 'Data 1' }, { id: 2, info: 'Data 2' }] },
+            //     { name: 'bookings', data: [{ id: 3, info: 'Data 3' }, { id: 4, info: 'Data 4' }] },
+            //     { name: 'Item 3', data: [{ id: 5, info: 'Data 5' }, { id: 6, info: 'Data 6' }] }
+            // ];
+
+            // Function to show table data for the clicked item
+            // $scope.showTable = function (item) {
+            //     if(item.data.in!=undefined){
+            //         $scope. selectedBooking=null;
+            //           $scope.selectedItem = item;
+            //     }else{
+            //         $scope. selectedItem=null;
+            //         $scope.selectedBooking = item;
+            //     }
+              
+            // };
+
+
+            $scope.showTable = function(item) {
+        if (item.type === 'empattendence') {
+            $scope.selectedItem = item;
+            $scope.selectedBooking = null; // Clear other selection
+        } else if (item.type === 'booking') {
+            $scope.selectedBooking = item;
+            $scope.selectedItem = null; // Clear other selection
+        }
+    };
+
+
+
+
+
+
+        });
+
+        // Capitalize filter for the section header
+        app.filter('capitalize', function () {
+            return function (input) {
+                return input.charAt(0).toUpperCase() + input.slice(1);
+            };
+        });
+
+        // Daily Revenue Chart
+        const ctxRevenue = document.getElementById('dailyRevenueChart').getContext('2d');
+        new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [30, 60, 90, 20, 150, 200, 250],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Customer Flow Chart
+        const ctxCustomerFlow = document.getElementById('customerFlowChart').getContext('2d');
+        new Chart(ctxCustomerFlow, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'In Restaurant',
+                        data: [40, 60, 80, 12, 120, 140, 160],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Online Order',
+                        data: [30, 50, 70, 90, 110, 130, 150],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Total Sale Chart
+        const ctxTotalSale = document.getElementById('totalSaleChart').getContext('2d');
+        new Chart(ctxTotalSale, {
+            type: 'line',
+            data: {
+                labels: ['1', '2', '3', '4', '5', '6'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [50, 100, 150, 200, 250, 300],
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
+
+</html>
