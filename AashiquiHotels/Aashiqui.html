@@ -228,14 +228,7 @@
                     <p style="color: rgb(0, 0, 0);"><span>300</span> <span style="margin-left: 6vw;"> 200</span><span style="margin-left: 6vw;"> 500</span></p>
                 </div>
 
-                <!-- <div class="card"
-                    style="margin-right: 1%;   color: rgb(0, 0, 0);  background: linear-gradient(310deg, #0ed1a0, #bfeb8d, #00000000);">
-                    <h3>Total Canceled</h3>
-                    <p style="color: rgb(0, 0, 0);">ONLINE || OFFLINE</p>
-                    <p><span>20</span> <span style="margin-left: 6vw;"> 50</span></p>
-                </div> -->
-
-
+    
 
             </div>
 
@@ -1080,55 +1073,11 @@
 
 
 
-            // Inside your AngularJS Controller
-$scope.offers1 = [
-  {
-    id: 1,
-    title: 'Flat 20% Off on First Order',
-    description: 'Enjoy a 20% discount on your first order with us!',
-    validity: new Date('2024-12-31'),
-    discount: 20,
-  },
-  {
-    id: 2,
-    title: 'Family Pack Offer',
-    description: 'Order for 4 or more and get 15% off on the total bill.',
-    validity: new Date('2024-12-20'),
-    discount: 15,
-  },
-  {
-    id: 3,
-    title: 'Birthday Special',
-    description: 'Celebrate your birthday with a 25% discount on any menu!',
-    validity: new Date('2024-12-25'),
-    discount: 25,
-  },
-  {
-    id: 4,
-    title: 'Weekend Bonanza',
-    description: 'Get 30% off on all orders above $50 every weekend.',
-    validity: new Date('2024-12-31'),
-    discount: 30,
-  },
-  {
-    id: 5,
-    title: 'Festive Offer',
-    description: 'Enjoy 40% off during the holiday season from December 20th to December 31st!',
-    validity: new Date('2024-12-31'),
-    discount: 40,
-  },
-  {
-    id: 6,
-    title: 'Lunch Combo Deal',
-    description: 'Get a free drink with every lunch combo ordered between 12 PM and 3 PM.',
-    validity: new Date('2024-12-31'),
-    discount: 0, // Free drink offer
-  },
-];
 
-$scope.redeemOffer = function (offerId) {
-  alert('Offer ' + offerId + ' redeemed!'); // You can implement your logic here
-};
+            
+            $scope.redeemOffer = function (offerId) {
+              alert('Offer ' + offerId + ' redeemed!'); // You can implement your logic here
+            };
 
 
 
@@ -1193,23 +1142,7 @@ $scope.redeemOffer = function (offerId) {
             // Initially filter the orders
             $scope.filterOrders();
 
-            // $scope.reportData = [
-            //     { name: 'empattendence', data: [{ id: 1, info: 'Data 1' }, { id: 2, info: 'Data 2' }] },
-            //     { name: 'bookings', data: [{ id: 3, info: 'Data 3' }, { id: 4, info: 'Data 4' }] },
-            //     { name: 'Item 3', data: [{ id: 5, info: 'Data 5' }, { id: 6, info: 'Data 6' }] }
-            // ];
-
-            // Function to show table data for the clicked item
-            // $scope.showTable = function (item) {
-            //     if(item.data.in!=undefined){
-            //         $scope. selectedBooking=null;
-            //           $scope.selectedItem = item;
-            //     }else{
-            //         $scope. selectedItem=null;
-            //         $scope.selectedBooking = item;
-            //     }
-              
-            // };
+     
 
 
             $scope.showTable = function(item) {
